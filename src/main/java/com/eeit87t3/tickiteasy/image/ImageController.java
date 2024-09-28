@@ -1,6 +1,5 @@
-package com.eeit87t3.tickiteasy.image.controller;
+package com.eeit87t3.tickiteasy.image;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -20,11 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @author Chuan
+ */
 @Controller
 public class ImageController {
 
 	@Autowired
 	private ResourceLoader resourceLoader;
+	@Autowired
+	private ImageUtil imageUtil;
 	
 	// 取得圖片
 	@ResponseBody
@@ -53,25 +57,32 @@ public class ImageController {
 	@PostMapping("/images/test/upload")
 	public String uploadImage(
 			@RequestParam MultipartFile imageFile) {
-		String uuidFileName = UUID.randomUUID().toString() + "." +  getFileExtension(imageFile.getOriginalFilename());
+//		String uuidFileName = UUID.randomUUID().toString() + "." +  getFileExtension(imageFile.getOriginalFilename());
+//		try {
+//			File uploadDirectory = new File(System.getProperty("user.dir") + "/images/test");
+//			if (!uploadDirectory.exists()) {
+//				uploadDirectory.mkdirs();
+//			}
+//			
+//			File destinationFile = new File(uploadDirectory, uuidFileName);
+//			imageFile.transferTo(destinationFile);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		String fileName = UUID.randomUUID().toString();
+		String sqlPathString = null;
 		try {
-			File uploadDirectory = new File(System.getProperty("user.dir") + "/images/test");
-			if (!uploadDirectory.exists()) {
-				uploadDirectory.mkdirs();
-			}
-			
-			File destinationFile = new File(uploadDirectory, uuidFileName);
-			imageFile.transferTo(destinationFile);
-		} catch (IOException e) {
+			sqlPathString = imageUtil.saveImage(ImageDirectory.TEST, imageFile, fileName);
+		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-		return "redirect:/images/test/" + uuidFileName;
+		return "redirect:/images/test/" + sqlPathString;
 	}
 	
 	
 	
     private MediaType determineMediaType(String filename) {
-        String extension = getFileExtension(filename);
+        String extension = imageUtil.getFileExtension(filename);
 
         switch (extension.toLowerCase()) {
             case "jpg":
@@ -81,18 +92,8 @@ public class ImageController {
                 return MediaType.IMAGE_PNG;
             case "gif":
                 return MediaType.IMAGE_GIF;
-//            case "webp":
-//            	return MediaType.valueOf("image/webp");
             default:
                 return MediaType.APPLICATION_OCTET_STREAM; // 回傳二進制 stream
         }
-    }
-
-    private String getFileExtension(String filename) {
-        int lastIndex = filename.lastIndexOf('.');
-        if (lastIndex == -1 || lastIndex == filename.length() - 1) {
-            return ""; // 沒有找到副檔名
-        }
-        return filename.substring(lastIndex + 1); // 回傳副檔名
     }
 }
