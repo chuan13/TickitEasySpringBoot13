@@ -23,7 +23,7 @@ public enum ImageDirectory {
 		}
 		this.directory = directory;
 		
-		this.fileNamePrefix = "/image/" + enumString;
+		this.fileNamePrefix = "/images/" + enumString + "/";
 	}
 	
 	public File getDirectory() {
