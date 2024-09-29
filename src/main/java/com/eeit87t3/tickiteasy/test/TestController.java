@@ -22,7 +22,9 @@ import com.eeit87t3.tickiteasy.admin.repository.AdminRepo;
 import com.eeit87t3.tickiteasy.image.ImageDirectory;
 import com.eeit87t3.tickiteasy.image.ImageUtil;
 
-
+/**
+ * @author Lilian(Curriane), Chuan(chuan13)
+ */
 @Controller
 public class TestController {
 
@@ -50,7 +52,9 @@ public class TestController {
 		return "test/adminTemplate";
 	}
 	
-	
+	/**
+	 * Controller: 圖片上傳測試
+	 */
 	@PostMapping("/test/image")
 	public String uploadImage(@RequestParam MultipartFile imageFile) {
 		String baseName = UUID.randomUUID().toString();
@@ -67,6 +71,9 @@ public class TestController {
 		return "redirect:" + pathString;
 	}
 	
+	/**
+	 * Controller: 圖片讀取測試
+	 */
 	@ResponseBody
 	@GetMapping("/test/image")
 	public ResponseEntity<?> getImage(@RequestParam Integer id) {
@@ -92,6 +99,9 @@ public class TestController {
 		}
 	}
 	
+	/**
+	 * Controller: 圖片刪除測試
+	 */
 	@ResponseBody
 	@DeleteMapping("/test/image")
 	public String deleteImage(@RequestParam Integer id) {
@@ -99,8 +109,16 @@ public class TestController {
 		if (resultOptional.isPresent()) {
 			TestImagesPO testImagesPO = resultOptional.get();
 			String imagePath = testImagesPO.getImagePath();
-			Boolean deleteImageResult = imageUtil.deleteImage(imagePath);
-			if (deleteImageResult) {
+			Boolean deleteImageResult = null;
+			try {
+				deleteImageResult = imageUtil.deleteImage(imagePath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (deleteImageResult == null) {
+				return "deleteImageResult == null";
+			} else if (deleteImageResult) {
 				testImagesRepo.delete(testImagesPO);
 				return "已成功執行。";
 			} else {
