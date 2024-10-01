@@ -21,7 +21,9 @@ public class ImageController {
 	@Autowired
 	private ImageUtil imageUtil;
 	
-	// 取得圖片
+	/**
+	 * JSON Controller: 取得圖片。
+	 */
 	@ResponseBody
 	@GetMapping("/images/{folderName}/{fileName}")
     public ResponseEntity<?> getImage(

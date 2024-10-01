@@ -15,7 +15,7 @@ https://eeit87t3.github.io/TickitEasySpringBoot/
 http://localhost:8080/TickitEasy/test/connection  
 
 2. 後台模板  
-http://localhost:8080/TickitEasy/test/template  
+http://localhost:8080/TickitEasy/test/admin-template  
 
 3. 圖片讀取  
 http://localhost:8080/TickitEasy/images/test/logo.png

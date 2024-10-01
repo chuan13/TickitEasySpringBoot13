@@ -46,37 +46,19 @@ public class ImageUtil {
 	 * 注意：時間間隔太短，可能導致刪除失敗；目前尚未找到解決方法，請稍後再試。
 	 * 
 	 * @param pathString String：資料庫儲存的路徑字串。
-	 * @return result - Boolean：此圖片檔案是否已不存在。
+	 * @return result - Boolean：<code>true</code> 表示此檔案已不存在、<code>false</code> 表示刪除失敗。
 	 * @throws IOException 
 	*/
 	public Boolean deleteImage(String pathString) throws IOException {
-		// TODO 整理
-		
 		Boolean result = false;
-//		File imageFile = new File(System.getProperty("user.dir") + pathString);
-////		System.out.println(imageFile.getAbsolutePath());  // 測試用
-//		if (imageFile.exists() && imageFile.isFile()) {
-////			System.out.println("imageFile.canWrite(): " + imageFile.canWrite());  // 測試用
-//			/* boolean deleteResult = */ imageFile.delete();
-////			System.out.println("imageFile.delete(): " + deleteResult);  // 測試用
-//			result = !imageFile.exists();
-//		}
 		
 		Resource resource = resourceLoader.getResource("file:" + System.getProperty("user.dir") + pathString);
 		if (resource.exists() && resource.isFile()) {  // 圖檔存在
 			File imageFile = resource.getFile();
-			
-//			System.out.println("imageFile.canWrite(): " + imageFile.canWrite());  // 測試用
-//			System.out.println("是否被鎖住：" + isFileLocked(imageFile));  // 測試用
-			
-			boolean deleteResult = imageFile.delete();
-//			System.out.println("imageFile.delete(): " + deleteResult);  // 測試用
-			
+			imageFile.delete();
 			result = !imageFile.exists();
 			System.out.println("result: " + !imageFile.exists());
 		}
-		
-		// 失敗1：檔案原本就不存在；失敗2：遇到此 bug、稍後再試
 		return result;
 	}
 	
@@ -88,8 +70,6 @@ public class ImageUtil {
 	 * @throws IOException 讀取指定檔案的過程發生錯誤。
 	*/
 	public byte[] getImageByteArray(String pathString) throws IOException {
-		// TODO 整理
-		
 		byte[] imageByteArray = null;
 		
 		Resource resource = resourceLoader.getResource("file:" + System.getProperty("user.dir") + pathString);	
@@ -144,24 +124,4 @@ public class ImageUtil {
         }
         return filename.substring(lastIndex + 1);  // 回傳副檔名
     }
-    
-//    public static boolean isFileLocked(File file) {
-//        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-//             FileChannel channel = randomAccessFile.getChannel()) {
-//             
-//            FileLock lock = channel.tryLock();
-//            if (lock != null) {
-//                lock.release(); // 釋放鎖定
-//                return false; // 檔案未被鎖住
-//            }
-//        } catch (OverlappingFileLockException e) {
-//        	System.out.println("OverlappingFileLockException：檔案被鎖住");
-//            return true; // 檔案被鎖住
-//        } catch (IOException e) {
-//            // 處理其他 I/O 錯誤
-//            e.printStackTrace();
-//            return true; // 假設檔案被鎖住或發生其他錯誤
-//        }
-//        return true; // 檔案被鎖住
-//    }
 }
