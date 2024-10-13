@@ -22,6 +22,7 @@ import jakarta.transaction.Transactional;
  */
 @Service
 public class EventsFindingService {
+	// Processing
 	
 	@Autowired
 	private EventsRepo eventsRepo;
