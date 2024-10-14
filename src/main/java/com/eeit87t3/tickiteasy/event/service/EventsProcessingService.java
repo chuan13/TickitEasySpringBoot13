@@ -1,6 +1,8 @@
 package com.eeit87t3.tickiteasy.event.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +16,7 @@ import com.eeit87t3.tickiteasy.categoryandtag.entity.CategoryEntity;
 import com.eeit87t3.tickiteasy.categoryandtag.entity.TagEntity;
 import com.eeit87t3.tickiteasy.event.entity.EventsEntity;
 import com.eeit87t3.tickiteasy.event.repository.EventsRepo;
+import com.eeit87t3.tickiteasy.image.ImageUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -21,11 +24,54 @@ import jakarta.transaction.Transactional;
  * @author Chuan(chuan13)
  */
 @Service
-public class EventsFindingService {
-	// Processing
+public class EventsProcessingService {
 	
 	@Autowired
 	private EventsRepo eventsRepo;
+	@Autowired
+	private ImageUtil imageUtil;
+	
+	
+	// 新增
+	/**
+	 * 新增活動。
+	 * 
+	 * @param eventsEntity：新增內容。
+	 * @return 新增後的 EventsEntity。
+	 */
+	public EventsEntity save(EventsEntity eventsEntity) {
+		return eventsRepo.save(eventsEntity);
+	}
+	
+	
+	// 刪除
+	/**
+	 * 先刪除圖片、再刪除活動。
+	 * 
+	 * @param eventID：活動 ID。
+	 * @return 執行結果。
+	 */
+	public Boolean deleteById(Integer eventID) {
+		EventsEntity eventsEntity = findById(eventID);
+		
+		// 刪除圖片
+		try {
+			imageUtil.deleteImage(eventsEntity.getEventPic());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		eventsRepo.delete(eventsEntity);
+		EventsEntity result = findById(eventID);
+		if (result == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	// 查詢
 	
 	/**
 	 * 每次查詢時，根據「最早開始售票時間」確認並更新該活動的狀態。
@@ -117,12 +163,23 @@ public class EventsFindingService {
 		return resultPage;
 	}
 	
-	
+	/**
+	 * 以 Specification 和 Pageable 查詢多筆活動、並更新狀態。
+	 * 
+	 * @param specification：動態條件。
+	 * @param pageable：分頁條件。
+	 * @return 查詢結果。
+	 */
 	public Page<EventsEntity> findBySpecificationAndPageable(Specification<EventsEntity> specification,Pageable pageable) {
 		Page<EventsEntity> resultPage = eventsRepo.findAll(specification, pageable);
 		for (EventsEntity eventsEntity : resultPage) {
 			updateStatus(eventsEntity);
 		}
 		return resultPage;
+	}
+	
+	public List<EventsEntity> findByListingAndOnsale() {
+		List<Integer> statuses = Arrays.asList(1, 2);
+		return eventsRepo.findByStatusIn(statuses);
 	}
 }

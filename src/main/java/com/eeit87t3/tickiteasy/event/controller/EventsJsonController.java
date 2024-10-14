@@ -1,6 +1,7 @@
 package com.eeit87t3.tickiteasy.event.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class EventsJsonController {
 	@Autowired
 	private EventsService eventsService;
 
-	@GetMapping()
+	@GetMapping
 	public Page<EventsEntity> findByDynamic(
 			@RequestParam(value = "p", defaultValue = "1") Integer pageNumber,
 			@RequestParam(value = "category-string", required = false) String categoryString,
@@ -40,6 +41,11 @@ public class EventsJsonController {
 			@RequestParam(value = "searching-time", required = false) LocalDateTime searchingTime
 			) {
 		return eventsService.findByDynamic(pageNumber, categoryString, tagString, searchingTime);
+	}
+	
+	@GetMapping("/listing")
+	public List<EventsEntity> findByListingAndOnsale() {
+		return eventsService.findByListingAndOnsale();
 	}
 	
 	@GetMapping("/{eventID}")

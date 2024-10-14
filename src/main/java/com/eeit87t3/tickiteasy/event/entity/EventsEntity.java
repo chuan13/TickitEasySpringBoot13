@@ -77,7 +77,7 @@ public class EventsEntity {
     private LocalDateTime earliestStartSaleTime;
 
     @Column(name = "quantityTotalAvailable", nullable = false)
-    private Integer quantityTotalAvailable = 0;
+    private Integer quantityTotalAvailable;
 
     @Column(name = "quantityTotalPurchased", nullable = false)
     private Integer quantityTotalPurchased = 0;
