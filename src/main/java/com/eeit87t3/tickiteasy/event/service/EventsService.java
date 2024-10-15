@@ -20,6 +20,7 @@ import com.eeit87t3.tickiteasy.categoryandtag.service.CategoryService;
 import com.eeit87t3.tickiteasy.categoryandtag.service.TagService;
 import com.eeit87t3.tickiteasy.event.dto.EventsDTO;
 import com.eeit87t3.tickiteasy.event.entity.EventsEntity;
+import com.eeit87t3.tickiteasy.event.entity.TicketTypesEntity;
 import com.eeit87t3.tickiteasy.event.repository.EventsSpecification;
 import com.eeit87t3.tickiteasy.image.ImageDirectory;
 import com.eeit87t3.tickiteasy.image.ImageUtil;
@@ -478,13 +479,18 @@ public class EventsService {
 	 * 
 	 * @param eventID
 	 * @param editStatus：要改為的狀態值。
-	 * @return
+	 * @return 編輯狀態後的 EventsEntity。
 	 */
 	@Transactional
 	public EventsEntity editStatus(Integer eventID, Short editStatus) {
 		EventsEntity eventsEntity = eventsProcessingService.findById(eventID);
 		if (eventsEntity != null) {
 			eventsEntity.setStatus(editStatus);
+			
+			// 一併修改該活動的所有票種的狀態值
+			for (TicketTypesEntity ticketTypesEntity : eventsEntity.getTicketTypes()) {
+				ticketTypesEntity.setStatus(editStatus);
+			}
 		}
 		return eventsEntity;
 	}

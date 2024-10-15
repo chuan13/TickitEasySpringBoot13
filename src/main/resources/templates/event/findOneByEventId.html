@@ -23,86 +23,145 @@
 
 			const contextPath = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split("/")[1];
 			const currentPath = window.location.protocol + "//" + window.location.host + window.location.pathname;
-			
+			const eventID = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+			const editStatusUrl = `${contextPath}/admin/api/event/${eventID}/edit-status`;
 
-			// 改變 status 的 button
-			const eventID = document.getElementById("event-id").innerText;
-			const statusTd = document.getElementById("statusTd");
-			const statusSpan = document.getElementById("status");
-			function statusButtonMaker() {
-				const status = statusSpan.getAttribute("data-status");
-				switch (status) {  // String 型態
-					case "0":
+			// status-button maker
+			function statusButtonMaker(status) {
+				let statusButtonDiv = document.createElement("div");
+
+				switch (status) {
+					case 0:  // 「未上架」
+					    
+					    // 上架按鈕
 						let listButton = document.createElement("button");
 						listButton.setAttribute("id", "list-button");
-						listButton.classList.add("btn", "btn-success", "ms-auto");
+						listButton.classList.add("btn", "btn-success");
 						listButton.textContent = "上架";
-						listButton.addEventListener("click", function() {
-							axios.put(`${contextPath}/admin/api/event/${eventID}/edit-status`, {
-								editStatus: 1,
-							})
-							.then(res => {
-								console.log(res);
-								window.location.href = currentPath;  // 以後有空再修成以一個 div 包裝狀態改變按鈕、並能清空內容。
-								statusSpan.classList.remove("text-danger");
-								statusSpan.classList.add("text-success");
-								statusSpan.innerText = "已上架";
-								statusSpan.setAttribute("data-status", 1);
-							})
-							.catch(err => {
-								console.error(err); 
-							})
-						})
-						statusTd.appendChild(listButton);
+						statusButtonDiv.append(listButton);
 
+						// 刪除按鈕
 						let deleteButton = document.createElement("button");
 						deleteButton.setAttribute("id", "delete-button");
 						deleteButton.classList.add("btn", "btn-danger", "ms-3");
 						deleteButton.textContent = "刪除";
-						deleteButton.addEventListener("click", function() {
-							axios.delete(`${contextPath}/admin/api/event/${eventID}`)
-							.then(res => {
-								console.log(res);
-								const container = document.getElementById("container");
-								container.innerHTML = `
-									<div>已成功刪除。</div>
-									<a href="${currentPath.substring(0, currentPath.lastIndexOf("/"))}" class="btn btn-secondary my-3">回到活動列表</a>`;
-							})
-							.catch(err => {
-								console.error(err); 
-							})
-						})
-						statusTd.appendChild(deleteButton);
-
+						statusButtonDiv.append(deleteButton);
 
 						break;
-					case "1":
+					case 1:  // 「已上架」
+						
+						// 下架按鈕
 						let unlistButton = document.createElement("button");
-						unlistButton.setAttribute("id", "list-button");
-						unlistButton.classList.add("btn", "btn-warning", "ms-auto");
+						unlistButton.setAttribute("id", "unlist-button");
+						unlistButton.classList.add("btn", "btn-warning");
 						unlistButton.textContent = "下架";
-						unlistButton.addEventListener("click", function() {
-							axios.put(`${contextPath}/admin/api/event/${eventID}/edit-status`, {
-								editStatus: 0,
-							})
-							.then(res => {
-								console.log(res);
-								window.location.href = currentPath;  // 以後有空再修成以一個 div 包裝狀態改變按鈕、並能清空內容。
-								statusSpan.classList.remove("text-success");
-								statusSpan.classList.add("text-danger");
-								statusSpan.innerText = "未上架";
-								statusSpan.setAttribute("data-status", 0);
-							})
-							.catch(err => {
-								console.error(err);
+						statusButtonDiv.append(unlistButton);
 
-							})
-						})
-						statusTd.appendChild(unlistButton);
 						break;
 				}
-				
+
+				return statusButtonDiv;
 			}
+
+
+			// event-tbody maker
+			function eventTbodyMaker(eventData) {
+				const eventTbodyTemplate = document.getElementById("event-tbody-template").content.cloneNode(true);
+
+				// 活動編號
+				eventTbodyTemplate.getElementById("event-id").innerText = eventData.eventID;
+
+				// 狀態
+				const status = eventTbodyTemplate.getElementById("status");
+				switch (eventData.status) {
+					case 0:
+						status.classList.add("text-danger");
+						status.innerText = "（未上架）";
+						break;
+					case 1:
+						status.classList.add("text-success");
+						status.innerText = "（已上架）";
+						break;
+					case 2:
+						status.classList.add("text-primary");
+						status.innerText = "（已啟售）";
+						break;
+				}
+
+				// 編輯狀態按鈕
+				const statusButtonDiv = eventTbodyTemplate.getElementById("status-button");
+				statusButtonDiv.append(statusButtonMaker(eventData.status).cloneNode(true));
+				// 狀態按鈕的 EventListener
+				statusButtonDiv.addEventListener("click", event => {
+					switch (event.target.id) {
+						case "list-button":
+							editStatusButton(1);
+							break;
+						case "delete-button":
+							editStatusButton(-1);
+							break;
+						case "unlist-button":
+							editStatusButton(0);
+							break;
+					}
+				})
+				
+				// 活動名稱
+				eventTbodyTemplate.getElementById("event-name").innerText = eventData.eventName;
+
+				// 活動主圖
+				eventPicTd = eventTbodyTemplate.getElementById("event-pic");
+				if (eventData.eventPic != null) {
+					const img = document.createElement("img");
+					img.setAttribute("src", eventData.eventPic);
+					img.setAttribute("alt", eventData.eventName);
+					img.setAttribute("width", "320px");
+					eventPicTd.append(img);
+				} else {
+					eventPicTd.innerText = "（無圖片）";
+				}
+
+				// 活動類別
+				eventTbodyTemplate.getElementById("event-category").innerHTML = eventData.eventCategory.categoryName;
+
+				// 活動標籤
+				const eventTagTd = eventTbodyTemplate.getElementById("event-tag");
+				if (eventData.eventTag != null) {
+					eventTagTd.innerText = eventData.eventTag.tagName;
+				} else {
+					eventTagTd.innerText = "（無標籤）";
+				}
+
+				const eventDescTd = eventTbodyTemplate.getElementById("event-desc");
+				if (eventData.eventDesc != null) {
+					eventDescTd.innerText = eventData.eventDesc;
+				} else {
+					eventDescTd.innerText = "（無活動介紹）";
+				}
+
+				// TODO 待繼續完成
+				document.getElementById("event-tbody").append(eventTbodyTemplate);
+			}
+
+			
+
+			// 編輯狀態按鈕的 EventListener
+			function editStatusButton(editStatus) {
+				axios.put(editStatusUrl, {
+						editStatus: editStatus,
+					})
+					.then(res => {
+						console.log(res);
+						alert("編輯狀態成功！");
+						// TODO 重新 Ajax
+					})
+					.catch(err => {
+						console.error(err); 
+						alert("編輯狀態失敗。");
+					})
+			}
+
+
 
 			// EventListener
 			document.getElementById("edit").addEventListener("click", function() {
@@ -113,7 +172,18 @@
 			})
 
 			// 初始執行
-			statusButtonMaker();
+			axios.get(contextPath + "/admin/api/event/" + eventID)
+				.then(res => {
+					eventTbodyMaker(res.data.event);
+				})
+				.catch(err => {
+					console.error(err); 
+			})
+			// statusButtonMaker();
+
+
+
+
 		});
 	</script>
 </head>
@@ -125,8 +195,8 @@
 	<div id="container" class="container">
 		<h1>活動詳情</h1>
 		<table class="table table-hover" th:unless="${error}">
-			<tbody>
-				<tr>
+			<tbody id="event-tbody">
+				<!-- <tr>
 					<th>活動編號</th>
 					<td id="event-id">[[${event.eventID}]]</td>
 				</tr>
@@ -166,7 +236,7 @@
 						<span th:if="${event.eventDesc != null}">[[${event.eventDesc}]]</span>
 						<span th:unless="${event.eventDesc != null}">（無活動介紹）</span>
 					</td>
-				</tr>
+				</tr> -->
 			</tbody>
 		</table>
 		<div th:if="${error}">未找到此筆活動。</div>
@@ -178,6 +248,42 @@
 	
 
    <div th:replace="~{commons/adminFooter}"></div>
+   <template id="event-tbody-template">
+		<tr>
+			<th>活動編號</th>
+			<td id="event-id"></td>
+		</tr>
+		<tr>
+			<th>狀態</th>
+			<td class="d-flex">
+				<span id="status" data-status="" class="d-flex align-items-center"></span>
+				<div id="status-button" class="ms-auto gap-3"></div>
+			</td>
+		</tr>
+		<tr>
+			<th>活動名稱</th>
+			<td id="event-name"></td>
+		</tr>
+		<tr>
+			<th>活動主圖</th>
+			<td id="event-pic">
+				<img th:if="${event.eventPic != null}" th:src="@{${event.eventPic}}" th:alt="${event.eventName}" width=320px>
+				<span th:unless="${event.eventPic != null}">（無圖片）</span>
+			</td>
+		</tr>
+		<tr>
+			<th>活動類別</th>
+			<td id="event-category"></td>
+		</tr>
+		<tr>
+			<th>活動標籤</th>
+			<td id="event-tag"></td>
+		</tr>
+		<tr>
+			<th>活動介紹</th>
+			<td id="event-desc"></td>
+		</tr>
+   </template>
 </body>
 
 </html>

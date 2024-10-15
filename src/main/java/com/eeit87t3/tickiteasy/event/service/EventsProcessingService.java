@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.eeit87t3.tickiteasy.categoryandtag.entity.CategoryEntity;
 import com.eeit87t3.tickiteasy.categoryandtag.entity.TagEntity;
 import com.eeit87t3.tickiteasy.event.entity.EventsEntity;
+import com.eeit87t3.tickiteasy.event.entity.TicketTypesEntity;
 import com.eeit87t3.tickiteasy.event.repository.EventsRepo;
 import com.eeit87t3.tickiteasy.image.ImageUtil;
 
@@ -81,10 +82,20 @@ public class EventsProcessingService {
 	 */
 	@Transactional
 	private EventsEntity updateStatus(EventsEntity eventsEntity) {
-		if (eventsEntity.getStatus() == 1) {
+		if (eventsEntity.getStatus() == 1) {  // 目前活動狀態為「已上架」
 			LocalDateTime now = LocalDateTime.now();
+
+			// 檢查最早售票時間，若已超過就修改狀態為「已啟售」
 			if (eventsEntity.getEarliestStartSaleTime() != null && now.isAfter(eventsEntity.getEarliestStartSaleTime())) {
 				eventsEntity.setStatus((short) 2);
+			}
+			
+			// 檢查所有票種
+			for (TicketTypesEntity ticketTypesEntity : eventsEntity.getTicketTypes()) {
+				// 檢查開始售票時間，若已超過就修改狀態為「已啟售」
+				if (now.isAfter(ticketTypesEntity.getStartSaleTime())) {
+					ticketTypesEntity.setStatus((short) 2);
+				}
 			}
 		}
 		return eventsEntity;

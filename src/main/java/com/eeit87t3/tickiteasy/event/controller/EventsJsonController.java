@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eeit87t3.tickiteasy.event.dto.EventWithTicketTypesDTO;
 import com.eeit87t3.tickiteasy.event.dto.EventsDTO;
 import com.eeit87t3.tickiteasy.event.entity.EventsEntity;
 import com.eeit87t3.tickiteasy.event.service.EventsService;
@@ -49,8 +50,8 @@ public class EventsJsonController {
 	}
 	
 	@GetMapping("/{eventID}")
-	public EventsEntity findById(@PathVariable Integer eventID) {
-		return eventsService.findById(eventID);
+	public EventWithTicketTypesDTO findById(@PathVariable Integer eventID) {
+		return new EventWithTicketTypesDTO(eventsService.findById(eventID));
 	}
 	
 	@PostMapping

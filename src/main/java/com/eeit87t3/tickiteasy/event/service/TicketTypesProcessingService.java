@@ -46,6 +46,7 @@ public class TicketTypesProcessingService {
 	
 	
 	// 查詢
+	// 原本應該要檢查狀態、切換啟售
 	public TicketTypesEntity findById(Integer ticketTypeID) {
 		return ticketTypesRepo.findById(ticketTypeID).orElse(null);
 	}

@@ -23,6 +23,10 @@ public class TicketTypesService {
 	// 查詢
 	
 	
+	public TicketTypesEntity findById(Integer ticketTypeID) {
+		return ticketTypesProcessingService.findById(ticketTypeID);
+	}
+	
 	// 新增
 	
 	/**
