@@ -41,6 +41,7 @@ public class EventsProcessingService {
 	 * @return 新增後的 EventsEntity。
 	 */
 	public EventsEntity save(EventsEntity eventsEntity) {
+		System.out.println(eventsEntity);
 		return eventsRepo.save(eventsEntity);
 	}
 	
