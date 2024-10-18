@@ -25,7 +25,6 @@ import com.eeit87t3.tickiteasy.event.repository.EventsSpecification;
 import com.eeit87t3.tickiteasy.image.ImageDirectory;
 import com.eeit87t3.tickiteasy.image.ImageUtil;
 
-import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 
 /**
@@ -89,21 +88,6 @@ public class EventsService {
 	}
 	
 	
-	public Page<EventsEntity> findByDynamic(Integer pageNumber, List<Short> statuses, String categoryString, String tagString, LocalDateTime searchingStartTime, LocalDateTime searchingEndTime) {
-		Specification<EventsEntity> specification = Specification.where(
-				EventsSpecification.hasStatuses(statuses)
-				.and(EventsSpecification.hasCategoryString(categoryString))
-				.and(EventsSpecification.hasTagString(tagString))
-				.and(EventsSpecification.hasSerchingTime(searchingStartTime, searchingEndTime))
-				);
-		Pageable pageable = PageRequest.of(pageNumber - 1, 10, Direction.ASC, "eventID");  // （第幾頁（從 0 起算）, 一頁幾筆, 排序方向, 排序依據欄位）
-		return eventsProcessingService.findBySpecificationAndPageable(specification, pageable);
-	}
-	
-	
-	public List<EventsEntity> findByListingAndOnsale() {
-		return eventsProcessingService.findByListingAndOnsale();
-	}
 	
 	
 	// 新增

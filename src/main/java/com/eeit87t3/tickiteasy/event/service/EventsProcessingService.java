@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.eeit87t3.tickiteasy.categoryandtag.entity.CategoryEntity;
 import com.eeit87t3.tickiteasy.categoryandtag.entity.TagEntity;
+import com.eeit87t3.tickiteasy.event.dto.EventsSearchingDTO;
 import com.eeit87t3.tickiteasy.event.entity.EventsEntity;
 import com.eeit87t3.tickiteasy.event.entity.TicketTypesEntity;
 import com.eeit87t3.tickiteasy.event.repository.EventsRepo;
@@ -41,7 +42,6 @@ public class EventsProcessingService {
 	 * @return 新增後的 EventsEntity。
 	 */
 	public EventsEntity save(EventsEntity eventsEntity) {
-		System.out.println(eventsEntity);
 		return eventsRepo.save(eventsEntity);
 	}
 	
@@ -176,22 +176,17 @@ public class EventsProcessingService {
 	}
 	
 	/**
-	 * 以 Specification 和 Pageable 查詢多筆活動、並更新狀態。
+	 * 以 EventsSearchingDTO 查詢多筆活動、並更新狀態。
 	 * 
-	 * @param specification：動態條件。
-	 * @param pageable：分頁條件。
+	 * @param eventsSearchingDTO：查詢條件。
 	 * @return 查詢結果。
 	 */
-	public Page<EventsEntity> findBySpecificationAndPageable(Specification<EventsEntity> specification,Pageable pageable) {
-		Page<EventsEntity> resultPage = eventsRepo.findAll(specification, pageable);
+	public Page<EventsEntity> findBySpecification(EventsSearchingDTO eventsSearchingDTO) {
+		eventsSearchingDTO.setStatuses(Arrays.asList((short) 1, (short) 2));  // 之後搬到 UserService
+		Page<EventsEntity> resultPage =  eventsRepo.findAll(eventsSearchingDTO.getSpecification(), eventsSearchingDTO.getPageable());
 		for (EventsEntity eventsEntity : resultPage) {
 			updateStatus(eventsEntity);
 		}
 		return resultPage;
-	}
-	
-	public List<EventsEntity> findByListingAndOnsale() {
-		List<Integer> statuses = Arrays.asList(1, 2);
-		return eventsRepo.findByStatusIn(statuses);
 	}
 }

@@ -44,10 +44,10 @@ public class EventsJsonController {
 //		return eventsService.findByDynamic(pageNumber, categoryString, tagString, searchingTime);
 //	}
 	
-	@GetMapping("/listing")
-	public List<EventsEntity> findByListingAndOnsale() {
-		return eventsService.findByListingAndOnsale();
-	}
+//	@GetMapping("/listing")
+//	public List<EventsEntity> findByListingAndOnsale() {
+//		return eventsService.findByListingAndOnsale();
+//	}
 	
 	@GetMapping("/{eventID}")
 	public EventWithTicketTypesDTO findById(@PathVariable Integer eventID) {
