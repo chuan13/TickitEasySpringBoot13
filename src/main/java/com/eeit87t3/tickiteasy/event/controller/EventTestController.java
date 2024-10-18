@@ -31,6 +31,7 @@ public class EventTestController {
 	@Autowired
 	private EventsProcessingService eventsProcessingService;
 
+
 	@GetMapping("/eventtest1")
 //	@JsonView(EventsJsonView.OnlyEvent.class)
 	public EventsEntity situation1(@RequestParam Integer id) {

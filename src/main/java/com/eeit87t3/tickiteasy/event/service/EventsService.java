@@ -88,8 +88,6 @@ public class EventsService {
 	}
 	
 	
-	
-	
 	// 新增
 	
 	/**
@@ -262,7 +260,6 @@ public class EventsService {
 			}
 		}
 		
-		
 		// 活動標籤
 		if (createEventsDTO.getTagString() != null && !createEventsDTO.getTagString().isBlank()) {  // 有輸入活動標籤
 			TagEntity tagEntity = tagService.findByTagString(createEventsDTO.getTagString());
@@ -270,7 +267,6 @@ public class EventsService {
 				eventsEntity.setEventTag(tagEntity);
 			}
 		}
-		
 		
 		return eventsEntity;
 	}

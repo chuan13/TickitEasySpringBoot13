@@ -189,4 +189,9 @@ public class EventsProcessingService {
 		}
 		return resultPage;
 	}
+	
+	public List<EventsEntity> findByListingAndOnsale() {
+		List<Integer> statuses = Arrays.asList(1, 2);
+		return eventsRepo.findByStatusIn(statuses);
+	}
 }

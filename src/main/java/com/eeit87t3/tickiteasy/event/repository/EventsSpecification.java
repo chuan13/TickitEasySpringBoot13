@@ -43,6 +43,7 @@ public class EventsSpecification {
 		return new Specification<EventsEntity>() {
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("null")
 			@Override
 			public Predicate toPredicate(Root<EventsEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 				if (eventName == null || eventName.isBlank()) {
@@ -58,6 +59,7 @@ public class EventsSpecification {
 		return new Specification<EventsEntity>() {
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("null")
 			@Override
 			public Predicate toPredicate(Root<EventsEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 				if (categoryString == null || categoryString.isBlank()) {
@@ -73,6 +75,7 @@ public class EventsSpecification {
 		return new Specification<EventsEntity>() {
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("null")
 			@Override
 			public Predicate toPredicate(Root<EventsEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 				if (tagString == null || tagString.isBlank()) {
@@ -103,6 +106,7 @@ public class EventsSpecification {
 		return new Specification<EventsEntity>() {
 			private static final long serialVersionUID = 1L;
 
+			@SuppressWarnings("null")
 			@Override
 			public Predicate toPredicate(Root<EventsEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 				if (searchingStartTime == null && searchingEndTime == null) {
