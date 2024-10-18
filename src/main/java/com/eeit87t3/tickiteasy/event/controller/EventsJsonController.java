@@ -34,15 +34,15 @@ public class EventsJsonController {
 	@Autowired
 	private EventsService eventsService;
 
-	@GetMapping
-	public Page<EventsEntity> findByDynamic(
-			@RequestParam(value = "p", defaultValue = "1") Integer pageNumber,
-			@RequestParam(value = "category-string", required = false) String categoryString,
-			@RequestParam(value = "tag-string", required = false) String tagString,
-			@RequestParam(value = "searching-time", required = false) LocalDateTime searchingTime
-			) {
-		return eventsService.findByDynamic(pageNumber, categoryString, tagString, searchingTime);
-	}
+//	@GetMapping
+//	public Page<EventsEntity> findByDynamic(
+//			@RequestParam(value = "p", defaultValue = "1") Integer pageNumber,
+//			@RequestParam(value = "category-string", required = false) String categoryString,
+//			@RequestParam(value = "tag-string", required = false) String tagString,
+//			@RequestParam(value = "searching-time", required = false) LocalDateTime searchingTime
+//			) {
+//		return eventsService.findByDynamic(pageNumber, categoryString, tagString, searchingTime);
+//	}
 	
 	@GetMapping("/listing")
 	public List<EventsEntity> findByListingAndOnsale() {
