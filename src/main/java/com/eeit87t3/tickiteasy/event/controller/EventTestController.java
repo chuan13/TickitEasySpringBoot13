@@ -17,13 +17,13 @@ import com.eeit87t3.tickiteasy.event.entity.TicketTypesEntity;
 import com.eeit87t3.tickiteasy.event.repository.EventsRepo;
 import com.eeit87t3.tickiteasy.event.repository.TicketTypesRepo;
 import com.eeit87t3.tickiteasy.event.service.EventsProcessingService;
-import com.eeit87t3.tickiteasy.event.service.EventsService;
+import com.eeit87t3.tickiteasy.event.service.AdminEventsService;
 
 @RestController
 public class EventTestController {
 	
 	@Autowired
-	private EventsService eventsService;
+	private AdminEventsService eventsService;
 	@Autowired
 	private TicketTypesRepo ticketTypesRepo;
 	@Autowired

@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.eeit87t3.tickiteasy.categoryandtag.entity.CategoryEntity;
@@ -182,7 +181,6 @@ public class EventsProcessingService {
 	 * @return 查詢結果。
 	 */
 	public Page<EventsEntity> findBySpecification(EventsSearchingDTO eventsSearchingDTO) {
-		eventsSearchingDTO.setStatuses(Arrays.asList((short) 1, (short) 2));  // 之後搬到 UserService
 		Page<EventsEntity> resultPage =  eventsRepo.findAll(eventsSearchingDTO.getSpecification(), eventsSearchingDTO.getPageable());
 		for (EventsEntity eventsEntity : resultPage) {
 			updateStatus(eventsEntity);

@@ -33,7 +33,7 @@ import jakarta.transaction.Transactional;
  * @author Chuan(chuan13)
  */
 @Service
-public class EventsService {
+public class AdminEventsService {
 
 	@Autowired
 	private EventsProcessingService eventsProcessingService;

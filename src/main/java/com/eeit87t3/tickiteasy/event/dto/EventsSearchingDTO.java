@@ -1,5 +1,6 @@
 package com.eeit87t3.tickiteasy.event.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class EventsSearchingDTO {
 	private String categoryString;
 	private String tagString;
 	private String cityName;
+	private LocalDate searchingDate;
 	private LocalDateTime searchingStartTime;
 	private LocalDateTime searchingEndTime;
 	
@@ -100,6 +102,16 @@ public class EventsSearchingDTO {
 	}
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
+	}
+	public LocalDate getSearchingDate() {
+		return searchingDate;
+	}
+	public void setSearchingDate(LocalDate searchingDate) {
+		if (searchingDate != null) {
+			this.searchingDate = searchingDate;
+			this.searchingStartTime = searchingDate.atTime(0, 0, 0, 0);
+			this.searchingEndTime = searchingDate.atTime(23, 59, 59, 999999999);
+		}
 	}
 	public LocalDateTime getSearchingStartTime() {
 		return searchingStartTime;
