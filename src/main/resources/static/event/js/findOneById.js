@@ -59,7 +59,7 @@ $(document).ready(function () {
                 // 加入購物車
                 ticketTypeDiv.querySelector(".add-to-cart").addEventListener("click", () => {
                     if (Number(quantityInput.value) > 0) {
-                        ticketTypesCartChange(ticketType.ticketTypeID, Number(quantityInput.value));
+                        ticketTypesCartAdd(ticketType, Number(quantityInput.value));
                         Swal.fire({
                             icon: "success",
                             html: `已將 <b>${ticketType.typeName}</b> ${Number(quantityInput.value)} 張 加入購物車！`,
