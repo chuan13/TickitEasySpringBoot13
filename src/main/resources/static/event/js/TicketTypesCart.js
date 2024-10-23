@@ -1,7 +1,7 @@
 // ========== 購物車行為 ==========
 
 // 加入購物車
-function ticketTypesCartAdd(ticketType, quantity) {
+function ticketTypesCartAdd(ticketType, quantityAvailable, quantity) {
     const ticketTypesCart = JSON.parse(localStorage.getItem("ticketTypesCart"));
     if (ticketTypesCart[ticketType.ticketTypeID]) {  // 此票種已經存在於購物車內
         ticketTypesCartChange(ticketType.ticketTypeID, quantity);
@@ -13,11 +13,11 @@ function ticketTypesCartAdd(ticketType, quantity) {
             typeName: ticketType.typeName,
             price: ticketType.price,
             quantity: quantity,
-            quantityAvailable: 100,  // 暫時寫死
+            quantityAvailable: quantityAvailable,
             totalPrice: ticketType.price * quantity
         };
+        localStorage.setItem("ticketTypesCart", JSON.stringify(ticketTypesCart))
     }
-    localStorage.setItem("ticketTypesCart", JSON.stringify(ticketTypesCart))
 }
 
 // 自購物車移除

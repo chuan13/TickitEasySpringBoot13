@@ -83,17 +83,16 @@
 				</div>
 				<div class="w-100">
 					售票期間：
-					<span>2024 年 10 月 25 日 11:00</span>
+					<span class="tickettype-start-sale-time">（開始售票時間）</span>
 					<span class="mx-1">～</span>
-					<span>2024 年 10 月 26 日 11:00</span>
+					<span class="tickettype-end-sale-time">（結束售票時間）</span>
 				</div>
 			</div>
 			<div class="col-2 d-flex justify-content-center align-items-center">
-				<span>價格：<span class="price">500</span></span>
+				<span>價格：<span class="tickettype-price">NaN</span></span>
 			</div>
 			<div class="col-2 d-flex justify-content-center align-items-center">
-				<span>剩餘數量：<span class="quantityLeft">100</span></span>
-				<!-- TODO 剩餘數量計算 -->
+				<span>剩餘數量：<span class="tickettype-quantity-left">100</span></span>
 			</div>
 			<div class="col-2 d-flex flex-column gap-1 align-items-center justify-content-center">
 				<div class="input-group">
@@ -101,7 +100,7 @@
 					<input type="number" class="quantity form-control text-center" min="0" readonly value="0">
 					<button class="plus btn btn-outline-secondary">+</button>
 				</div>
-				<button class="add-to-cart btn btn-primary mt-1">加入購物車</button>
+				<button class="add-to-cart btn btn-primary mt-1" disabled>非售票期間</button>
 			</div>
 		</div>
 	</template>
