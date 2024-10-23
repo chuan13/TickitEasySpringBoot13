@@ -17,6 +17,33 @@ $(document).ready(function () {
         if (event.eventPic != null) {
             eventPicImg.setAttribute("src", contextPath + event.eventPic);
         }
+        
+        // 類別
+        eventContent.getElementById("category").textContent = event.eventCategory.categoryName;
+        // 標籤
+        if (event.tag != null) {
+            eventContent.getElementById("tag").textContent = event.eventTag.tagName;
+        }
+
+        // 地點
+        if (event.place != null) {
+            eventContent.getElementById("place").textContent = event.place;
+        } else {
+            eventContent.getElementById("place").textContent = event.address;
+        }
+        // Google Map 連結
+        eventContent.getElementById("google-map-link").setAttribute("href", "https://www.google.com/maps/place/" + event.address);
+        // 地址
+        eventContent.getElementById("address").textContent = event.address;
+
+        // 活動開始時間
+        eventContent.getElementById("event-start-time").textContent = dateFormat(event.eventStartTime);
+        // 活動結束時間
+        eventContent.getElementById("event-end-time").textContent = dateFormat(event.eventEndTime);
+        // 開始入場時間
+        eventContent.getElementById("start-entry-time").textContent = dateFormat(event.startEntryTime);
+        // 結束入場時間
+        eventContent.getElementById("end-entry-time").textContent = dateFormat(event.endEntryTime);
 
         // 活動介紹
         if (event.eventDesc != null) {
@@ -24,8 +51,6 @@ $(document).ready(function () {
         } else {
             eventContent.getElementById("event-desc").textContent = "（無活動介紹）";
         }
-
-
 
 
         // ========== 票種 ==========
