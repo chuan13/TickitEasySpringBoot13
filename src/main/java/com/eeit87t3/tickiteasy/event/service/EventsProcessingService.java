@@ -82,7 +82,7 @@ public class EventsProcessingService {
 	 */
 	@Transactional
 	private EventsEntity updateStatus(EventsEntity eventsEntity) {
-		if (eventsEntity.getStatus() == 1) {  // 目前活動狀態為「已上架」
+		if (eventsEntity.getStatus() == 1 || eventsEntity.getStatus() == 2) {  // 目前活動狀態為「已上架」或「已啟售」
 			LocalDateTime now = LocalDateTime.now();
 
 			// 檢查最早售票時間，若已超過就修改狀態為「已啟售」

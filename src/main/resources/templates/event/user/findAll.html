@@ -37,7 +37,7 @@
 				if (eventsData.length == 0) {  // 查詢無結果
 					eventsDiv.innerHTML = `
 						<div></div>
-						<div><h3>目前沒有符合條件的活動。</h3></div>
+						<div><h3 style="text-align: center">目前沒有<br>符合條件的活動。</h3></div>
 						<div></div>`;
 				} else {
 					eventsData.forEach(event => {
@@ -181,7 +181,12 @@
 						paginationMaker(res.data);
 
 						// 回到查詢結果區頂部
-						document.getElementById("event-content").scrollIntoView({ behavior: 'smooth' });
+						const targetElement = document.getElementById("event-content");
+						const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;  // 目標元素上緣相對於 window 頂部的距離 + 目前滾輪離頂部的距離
+						window.scrollTo({
+							top: targetPosition - 70,
+							behavior: 'smooth'
+						});
 					})
 					.catch(err => {
 						console.error(err);

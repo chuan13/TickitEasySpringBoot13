@@ -37,6 +37,14 @@
 			const currentPath = window.location.protocol + "//" + window.location.host + window.location.pathname;
 
 
+			// 設定日期時間欄位最小值
+			const now = new Date();
+			const nowFormattedString = now.toISOString().slice(0, 16);
+			document.querySelectorAll("input[type=datetime-local]").forEach(element => {
+            	element.setAttribute('min', nowFormattedString);
+        	});
+
+			
 			// summernote
 			$('#summernote').summernote({
 				placeholder: '活動介紹',
