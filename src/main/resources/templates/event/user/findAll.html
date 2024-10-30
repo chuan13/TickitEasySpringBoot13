@@ -151,7 +151,6 @@
 				
 				getData(params);
 			})
-
 			// 取得查詢參數
 			function getParams() {
 				return {
@@ -164,6 +163,16 @@
 					directionString: document.getElementById("direction").value
 				}
 			}
+			// 清空按鈕
+			document.getElementById("clear").addEventListener("click", () => {
+				document.getElementById("event-name").value = "";
+				document.getElementById("city-name").value = "";
+				document.getElementById("category").value = "";
+				document.getElementById("tag").value = "";
+				document.getElementById("searching-date").value = "";
+				document.getElementById("order-by").value = "eventStartTime";
+				document.getElementById("direction").value = "ASC";
+			})
 
 			
 			function getData(innerParams) {
@@ -198,7 +207,8 @@
 
 
 			// 初始執行
-			getData({});
+			const initParams = getParams();
+			getData(initParams);
 
 
 			
@@ -268,7 +278,8 @@
 						</select>
 					</div>
 				</div>
-				<div class="d-flex justify-content-center align-items-center">
+				<div class="d-flex justify-content-evenly align-items-center">
+					<button class="btn btn-secondary" id="clear">清空</button>
 					<button class="btn btn-primary" id="search">查詢</button>
 				</div>
 			</div>

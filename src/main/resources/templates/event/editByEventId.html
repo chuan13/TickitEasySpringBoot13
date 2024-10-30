@@ -26,6 +26,7 @@
 		}
 		table>tbody>tr>td img {
 			max-width: 100%;
+			height: auto !important;
 		}
 	</style>
 	<script>
@@ -168,7 +169,7 @@
 					<td>
 						<img th:if="${event.eventPic != null}" th:src="@{${event.eventPic}}" th:alt="${event.eventName}" class="mb-2" width=320px>
 						<span th:unless="${event.eventPic != null}"><input type="text" class="form-control-plaintext" readonly value="（無圖片）"></span>
-						<input type="file" class="form-control" name="eventPicFile">
+						<input type="file" class="form-control" name="eventPicFile" accept=".jpg, .jpeg, .png, .gif">
 					</td>
 				</tr>
 				<tr>

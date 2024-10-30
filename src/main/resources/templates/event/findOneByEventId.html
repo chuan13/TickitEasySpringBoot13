@@ -274,12 +274,17 @@
 			const createTickettypeForm = document.getElementById("create-tickettype-form");
 
 			// 示範輸入
-			document.getElementById("demo").addEventListener("click", () => {
-				createTickettypeForm.elements["typeName"].value = "區";
-				createTickettypeForm.elements["price"].value = "00";
-				createTickettypeForm.elements["startSaleTime"].value = "2024-10-30T00:00";
-				createTickettypeForm.elements["endSaleTime"].value = "2025-04-26T23:59";
-				// createTickettypeForm.elements["quantityAvailable"].value = "50";  // 暫不使用
+			document.getElementById("demo1").addEventListener("click", () => {
+				createTickettypeForm.elements["typeName"].value = "預售票";
+				createTickettypeForm.elements["price"].value = "350";
+				createTickettypeForm.elements["startSaleTime"].value = "2024-11-09T00:00";
+				createTickettypeForm.elements["endSaleTime"].value = "2024-12-27T23:59";
+			})
+			document.getElementById("demo2").addEventListener("click", () => {
+				createTickettypeForm.elements["typeName"].value = "展期票";
+				createTickettypeForm.elements["price"].value = "450";
+				createTickettypeForm.elements["startSaleTime"].value = "2024-12-28T00:00";
+				createTickettypeForm.elements["endSaleTime"].value = "2025-04-06T15:59";
 			})
 
 			// 啟用限制購買數量的 checkbox
@@ -445,7 +450,8 @@
 						</table>
 					</div>
 					<div class="modal-footer">
-						<button type="button" id="demo" class="btn btn-warning">示範輸入</button>
+						<button type="button" id="demo1" class="btn btn-warning">示範輸入：預售</button>
+						<button type="button" id="demo2" class="btn btn-warning">示範輸入：展期</button>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
 						<button type="submit" class="btn btn-primary">儲存</button>
 					</div>

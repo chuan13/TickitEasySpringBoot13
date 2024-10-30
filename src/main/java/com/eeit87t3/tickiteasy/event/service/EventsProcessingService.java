@@ -93,8 +93,10 @@ public class EventsProcessingService {
 			// 檢查所有票種
 			for (TicketTypesEntity ticketTypesEntity : eventsEntity.getTicketTypes()) {
 				// 檢查開始售票時間，若已超過就修改狀態為「已啟售」
-				if (now.isAfter(ticketTypesEntity.getStartSaleTime())) {
+				if (now.isAfter(ticketTypesEntity.getStartSaleTime()) && now.isBefore(ticketTypesEntity.getEndSaleTime())) {
 					ticketTypesEntity.setStatus((short) 2);
+				} else {
+					ticketTypesEntity.setStatus((short) 1);
 				}
 			}
 		}
