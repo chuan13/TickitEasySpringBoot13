@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/user/post")
+@RequestMapping("/post")
 public class PostUserController {
 		//測試頁面 
 		@GetMapping("/test")
@@ -37,4 +37,16 @@ public class PostUserController {
 		public String userEditPost() {
 			return "post/userEditPost";  
 		}
+		//會員頁面
+		@GetMapping("/like")
+		public String showMemberPage() {
+			
+			return "post/memberPostLikes"; 
+		}
+		@GetMapping("/memberPosts")
+		public String showMemberPostPage() {
+			
+			return "post/memberPosts"; 
+		}
+				
 }

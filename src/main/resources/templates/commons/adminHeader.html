@@ -13,7 +13,8 @@
                 <!-- 替換瑋芳 logo 的位置 -->
                 <!-- <i class="fas fa-ticket-alt me-2"></i> -->
                 <img th:src="@{/logo/LogoWhite.svg}" alt="logo" width=34px class="me-2">
-                TickitEasy 管理系統
+                <img th:src="@{/logo/TextWhite.svg}" alt="logo" width=130px class="me-2" style="transform:none;">
+                &ensp; 後台管理系統
             </a>
             <!-- 登出按鈕，始終顯示在右側 -->
             <ul class="navbar-nav ms-auto">
@@ -43,9 +44,6 @@
                         <li>
                             <a th:href="@{/admin/member/analytics}" class="sidebar-link"><i class="fas fa-chart-line"></i> 會員統計分析</a>
                         </li>
-                        <li>
-					        <a class="sidebar-link" th:href="@{/admin/customer-service}"><i class="fas fa-headset"></i> 線上客服</a>
-					    </li>
                     </ul>
                 </li>
                 <li>
@@ -59,9 +57,6 @@
                         </li>
                         <li>
                             <a th:href="@{/admin/event/create}" class="sidebar-link"><i class="fas fa-calendar-plus"></i> 新增活動</a>
-                        </li>
-                        <li>
-                            <a href="#" class="sidebar-link"><i class="fas fa-ticket-alt"></i> 票券訂單列表</a>
                         </li>
                     </ul>
                 </li>
@@ -77,9 +72,12 @@
                             <a th:href="@{/admin/product/create}" class="sidebar-link"><i class="fas fa-plus-circle"></i> 新增商品</a>
                         </li>
                         <li>
-                            <a th:href="@{/admin/order}" class="sidebar-link"><i class="fas fa-shopping-cart"></i> 商品訂單列表</a>
+                            <a th:href="@{/admin/product/analytics}" class="sidebar-link"><i class="fas fa-chart-line"></i> 商品統計分析</a>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <a th:href="@{/admin/order}" class="sidebar-link"><i class="fas fa-shopping-cart"></i> 訂單管理</a>
                 </li>
                 <li>
                     <a href="#cwdfundingSubmenu" data-bs-toggle="collapse" aria-expanded="false"

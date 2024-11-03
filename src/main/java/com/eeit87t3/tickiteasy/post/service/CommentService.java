@@ -38,10 +38,11 @@ public class CommentService {
 	    // 直接從 commentRepo 取得結果，若沒有資料則返回空的 List
 	    return commentRepo.findByPostPostID(postID);
 	}
-//	public List<ShowCommentDTO> getCommentsByPostId(Integer postID) {
-//	  
-//	    return commentRepo.getCommentsByPostId(postID);
-//	}
+	
+	@Transactional(readOnly = true)
+	public List<ShowCommentDTO> findByPostIdwithMember(Integer postID) {
+	    return commentRepo.findCommentsWithMemberInfoByPostID(postID);
+	}
 
 
 	//根據貼文ID新增留言
@@ -63,6 +64,7 @@ public class CommentService {
         return commentRepo.save(existingComment); // 返回更新後的貼文實體
     }
 	
+	//刪除單筆
 	@Transactional
     public Boolean delete(Integer commentID) {
         // 查詢貼文是否存在
@@ -77,6 +79,11 @@ public class CommentService {
         // 如果貼文不存在，返回 false
         return false;
     }
+	
+	public void deleteAll(List<CommentEntity> comments) {
+	    commentRepo.deleteAll(comments); // 批量刪除留言
+	}
+
 
     
 }
